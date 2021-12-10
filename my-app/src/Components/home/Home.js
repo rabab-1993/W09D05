@@ -10,6 +10,7 @@ function Home() {
   return (
       <>
     <div>
+    <Link to="/post">Post</Link>
       <Login />
       <h1>
         Dosn't have an account?

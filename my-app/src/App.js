@@ -3,6 +3,7 @@ import Home from "./Components/home/Home";
 import Login from "./Components/account/Login";
 import Register from "./Components/account/Register";
 import './App.css';
+import Post  from "./Components/post/Post";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Routes>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
-        {/* <Route exact path="/task" element={<Task />} /> */}
+        <Route exact path="/post" element={<Post />} />
       </Routes>
     </div>
   );

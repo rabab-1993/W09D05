@@ -12,8 +12,9 @@ const Login = () => {
   const state = useSelector((state) => {
     return state;
   });
-  const [logIn, setLogIn] = useState({
-    userName: "",
+
+  const [log, setLogIn] = useState({
+    // userName
     email: "",
     password: "",
   });
@@ -30,29 +31,30 @@ const Login = () => {
   };
 
   //
-  const login = async () => {
-      console.log(state);
+  const userLog = async () => {
+    
     try {
       const result = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user/login`,
-        Login
+        log
       );
       const data = {
         token: result.data.token,
         user: result.data.result._id,
       };
       dispatch(logIn(data));
-      console.log(result);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div>
-      <Form layout="inline" onChange={setLogIn} value={logIn}>
+      <Form layout="inline" onChange={setLogIn} value={log}>
         <Form.Group controlId="username-7">
           <Form.ControlLabel>Username/email</Form.ControlLabel>
-          <Form.Control name="username" style={{ width: 160 }} />
+          <Form.Control name="email" style={{ width: 160 }} type="text"/>
           <Form.HelpText tooltip>Required</Form.HelpText>
         </Form.Group>
 
@@ -66,7 +68,7 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Button onClick={login}>Login</Button>
+        <Button onClick={userLog}>Login</Button>
       </Form>
       <h3>Log in with google</h3>
       <FcGoogle className="icon" onClick={handleGoogle} />
