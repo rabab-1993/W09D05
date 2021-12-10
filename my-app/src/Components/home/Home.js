@@ -8,6 +8,7 @@ function Home() {
     navigate("/register");
   };
   return (
+      <>
     <div>
       <Login />
       <h1>
@@ -17,6 +18,7 @@ function Home() {
         </Link>
       </h1>
     </div>
+      </>
   );
 }
 
