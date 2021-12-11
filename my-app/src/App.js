@@ -8,11 +8,11 @@ import Post  from "./Components/post/Post";
 function App() {
   return (
     <div className="App">
-       <Home />
+       <Login />
       <Routes>
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
-        <Route exact path="/post" element={<Post />} />
+        <Route exact path="/posts" element={<Post />} />
       </Routes>
     </div>
   );

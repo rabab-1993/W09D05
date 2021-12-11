@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
 import { logIn } from "../../reducers/login";
 import { Form, Button, ButtonToolbar } from "rsuite";
 import { FcGoogle } from "react-icons/fc";
 import "./login.css";
 
 const Login = () => {
-  // let navigate = useNavigate();
+    const navigate = useNavigate();
+
+    
   const dispatch = useDispatch();
   const state = useSelector((state) => {
     return state;
@@ -39,42 +43,31 @@ const Login = () => {
       );
       const data = {
         token: result.data.token,
-        user: result.data.result._id,
+        user: result.data.result,
       };
       dispatch(logIn(data));
-      console.log(data);
+      console.log(state);
     } catch (error) {
       console.log(error);
     }
   };
 
+  let toRegisterPage = () => {
+    navigate("/register");
+    
+  };
+  let toPostPage = () => {
+    userLog()
+    navigate("/posts");
+
+  };
   return (
     <div>
-      {/* <Form layout="inline" onChange={setLogIn} value={log}>
-        <Form.Group controlId="username-7">
-          <Form.ControlLabel>Username/email</Form.ControlLabel>
-          <Form.Control name="email" style={{ width: 160 }} type="text"/>
-          <Form.HelpText tooltip>Required</Form.HelpText>
-        </Form.Group>
-
-        <Form.Group controlId="password-7">
-          <Form.ControlLabel>Password</Form.ControlLabel>
-          <Form.Control
-            name="password"
-            type="password"
-            autoComplete="off"
-            style={{ width: 160 }}
-          />
-        </Form.Group>
-
-        <Button onClick={userLog}>Login</Button>
-      </Form>
-      <h3>Log in with google</h3>
-      <FcGoogle className="icon" onClick={handleGoogle} /> */}
+      
       <Form fluid onChange={setLogIn} value={log}>
         <Form.Group>
           <Form.ControlLabel>Username or email address</Form.ControlLabel>
-          <Form.Control name="name" />
+          <Form.Control name="email" />
         </Form.Group>
         <Form.Group>
           <Form.ControlLabel>Password</Form.ControlLabel>
@@ -82,7 +75,7 @@ const Login = () => {
         </Form.Group>
         <Form.Group>
           <ButtonToolbar>
-            <Button appearance="primary" onClick={userLog}>
+            <Button appearance="primary" onClick={toPostPage}>
               Login
             </Button>
             <Button appearance="link">Forgot password?</Button>
@@ -93,6 +86,12 @@ const Login = () => {
         <FcGoogle className="icon" onClick={handleGoogle} />
         Log in with google
       </h3>
+      <h1>
+        Dosn't have an account?
+        <Link to="/register" onClick={toRegisterPage}>
+          Register
+        </Link>
+      </h1>
     </div>
   );
 };

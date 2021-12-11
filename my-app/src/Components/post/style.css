@@ -1,3 +1,11 @@
 .loading-icon {
-    color:brown;
+  color: brown;
+}
+
+.post-card img {
+  width: 16rem;
+}
+
+.post-icon {
+  font-size: 2em;
 }

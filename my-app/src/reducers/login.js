@@ -9,7 +9,7 @@ const initialState = {
       case "LOGIN":
         const { user, token } = payload;
         localStorage.setItem("token", token);
-        localStorage.setItem("id", user);
+        localStorage.setItem("id", user._id);
         console.log(user);
         return { user, token };
       case "LOGOUT":

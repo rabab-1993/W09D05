@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getPost, newPost } from "../../reducers/post";
-import { Uploader, Loader } from "rsuite";
+import { getPost, newPost, delPost } from "../../reducers/post";
+import { Loader } from "rsuite";
 import FileBase from "react-file-base64";
-import { FcStackOfPhotos, FcRemoveImage } from "react-icons/fc";
+import { FcStackOfPhotos, FcFullTrash, FcLike } from "react-icons/fc";
 import "./style.css";
 const Post = () => {
   const [post, setPost] = useState({
@@ -59,12 +59,33 @@ const Post = () => {
       );
 
       dispatch(newPost({ posts: result.data }));
-      console.log(result.data);
+     
       //   setPost("");
     } catch (error) {
       console.log(error);
     }
     allPosts();
+  };
+
+  const deletePost = async (id) => {
+    console.log(id);
+    try {
+      const result = await axios.delete(
+        `${
+          process.env.REACT_APP_BASE_URL
+        }/posts/delete?isDeleted=${true}&_id=${id}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+
+      dispatch(delPost(result.data));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -74,20 +95,11 @@ const Post = () => {
       {(state.postReducer.posts.length &&
         state.postReducer.posts.map((items) => {
           return (
-            <div key={items._id}>
+            <div key={items._id} className="post-card">
               <img src={items.img} alt="img" />
               <h2>{items.desc}</h2>
-              {/* <input
-                  type="text"
-                  name=""
-                  id=""
-                  placeholder="text"
-                  value={task}
-                  onChange={(ev) => setTask(ev.target.value)}
-                />
-                <FcFullTrash onClick={() => deleteTask(items._id)} />
-                <FcEditImage onClick={() => UpdateTask(items._id)} /> */}
-                <FcRemoveImage />
+              <FcFullTrash onClick={() => deletePost(items._id)} className="post-icon"/>
+              <FcLike className="post-icon"/>
             </div>
           );
         })) || (
@@ -100,20 +112,19 @@ const Post = () => {
         />
       )}
       <div>
-       
-            <FileBase
-            type="file"
-            multiple={false}
-            onDone={({ base64 }) => setPost({...post, img: base64 })} 
-            />
-          <FcStackOfPhotos />
+        <FileBase
+          type="file"
+          multiple={false}
+          onDone={({ base64 }) => setPost({ ...post, img: base64 })}
+        />
+        <FcStackOfPhotos />
         <input
           type="text"
           name="desc"
           id=""
           placeholder="text"
           value={post.desc}
-          onChange={(ev) => setPost({...post, desc: ev.target.value})}
+          onChange={(ev) => setPost({ ...post, desc: ev.target.value })}
         />
         <button onClick={addPost}>ADD</button>
       </div>
