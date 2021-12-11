@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getPost, newPost, delPost } from "../../reducers/post";
-import { Loader } from "rsuite";
 import FileBase from "react-file-base64";
+import { getPost, newPost, delPost } from "../../reducers/post";
+import Nav from "../header/Nav";
 import { FcStackOfPhotos, FcFullTrash, FcLike } from "react-icons/fc";
 import "./style.css";
-const Post = () => {
+
+const Profile = () => {
   const [post, setPost] = useState({
     img: "",
     desc: "",
   });
+  useEffect(() => {
+    allPosts();
+  }, []);
+  const dispatch = useDispatch();
   const state = useSelector((state) => {
     return state;
   });
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    allPosts();
-  }, []);
-
-  const allPosts = async () => {
+  const allPosts = async (id) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/posts`,
+        `${process.env.REACT_APP_BASE_URL}/posts/profile?user=${state.signIn.id}`,
 
         {
           headers: {
@@ -59,7 +58,7 @@ const Post = () => {
       );
 
       dispatch(newPost({ posts: result.data }));
-     
+
       //   setPost("");
     } catch (error) {
       console.log(error);
@@ -89,9 +88,10 @@ const Post = () => {
   };
 
   return (
-    <div className="post">
-      <h1>post route</h1>
-
+      <>
+      <Nav />
+    <div className="profile">
+      <h1>profile page</h1>
       {(state.postReducer.posts.length &&
         state.postReducer.posts.map((items) => {
           return (
@@ -99,19 +99,11 @@ const Post = () => {
               <img src={items.img} alt="img" />
               <h2>{items.desc}</h2>
               <FcFullTrash onClick={() => deletePost(items._id)} className="post-icon"/>
-              <FcLike className="post-icon"/>
+              <FcLike className="post-icon" />
             </div>
           );
-        })) || (
-        <Loader
-          size="lg"
-          content="loading..."
-          inverse
-          center
-          className="loading-icon"
-        />
-      )}
-      <div>
+        })) || <h1>loading...</h1>}
+        <div>
         <FileBase
           type="file"
           multiple={false}
@@ -129,7 +121,8 @@ const Post = () => {
         <button onClick={addPost}>ADD</button>
       </div>
     </div>
+    </>
   );
 };
 
-export default Post;
+export default Profile;
