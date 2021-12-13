@@ -9,9 +9,8 @@ import { FcGoogle } from "react-icons/fc";
 import "./login.css";
 
 const Login = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    
   const dispatch = useDispatch();
   const state = useSelector((state) => {
     return state;
@@ -46,6 +45,7 @@ const Login = () => {
         user: result.data.result,
       };
       dispatch(logIn(data));
+      navigate("/posts");
       console.log(state);
     } catch (error) {
       console.log(error);
@@ -54,16 +54,12 @@ const Login = () => {
 
   let toRegisterPage = () => {
     navigate("/register");
-    
   };
-  let toPostPage = () => {
-    userLog()
-    navigate("/posts");
-
-  };
+  // let toPostPage = () => {
+  //   userLog();
+  // };
   return (
     <div>
-      
       <Form fluid onChange={setLogIn} value={log}>
         <Form.Group>
           <Form.ControlLabel>Username or email address</Form.ControlLabel>
@@ -75,7 +71,7 @@ const Login = () => {
         </Form.Group>
         <Form.Group>
           <ButtonToolbar>
-            <Button appearance="primary" onClick={toPostPage}>
+            <Button appearance="primary" onClick={userLog}>
               Login
             </Button>
             <Button appearance="link">Forgot password?</Button>
@@ -88,7 +84,7 @@ const Login = () => {
       </h3>
       <h1>
         Dosn't have an account?
-        <Link to="/register" onClick={toRegisterPage}>
+        <Link to="/register" onClick={toRegisterPage} className="register">
           Register
         </Link>
       </h1>

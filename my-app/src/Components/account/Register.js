@@ -1,19 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Form, Button } from "rsuite";
 import "./register.css";
 
 const Register = () => {
-  const location = useLocation;
+  const [msg, setMsg] = useState("");
   const [role, setRole] = useState("");
   const [register, setRegister] = useState({
     userName: "",
     email: "",
     password: "",
+    avatar: "",
     role: "61a82ae32b8f8814ee629665",
   });
-
+  const navigate = useNavigate();
   const creatUser = async () => {
     try {
       const result = await axios.post(
@@ -21,18 +22,17 @@ const Register = () => {
         register
       );
       console.log(result.data);
-      setRole(result.data.role);
+      setMsg("Active your Email");
     } catch (error) {
       console.log(error);
     }
   };
   return (
     <div>
-      
       <Form onChange={setRegister} value={register}>
         <Form.Group controlId="name-6">
           <Form.ControlLabel>Username</Form.ControlLabel>
-          <Form.Control name="userName"/>
+          <Form.Control name="userName" />
           <Form.HelpText>Required</Form.HelpText>
         </Form.Group>
         <Form.Group controlId="email-6">
@@ -46,9 +46,10 @@ const Register = () => {
         </Form.Group>
 
         <Button appearance="primary" onClick={creatUser}>
-          Submit
+          Register
         </Button>
       </Form>
+      <h1>{msg}</h1>
     </div>
   );
 };

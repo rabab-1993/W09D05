@@ -1,3 +1,8 @@
 .icon {
     font-size: 2em;
 }
+
+.register {
+    color: turquoise;
+    text-decoration: underline;
+}

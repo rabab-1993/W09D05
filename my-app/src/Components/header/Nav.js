@@ -32,11 +32,11 @@ const Nav = () => {
           <Link to="/posts" onClick={() =>  navigate("/posts")}>
             <ImHome />
           </Link>
-          <Link to="/login" onClick={logOut}>
+          <Link to="/" onClick={logOut}>
             Log out
           </Link>
           <Avatar
-            alt="Remy Sharp"
+            alt="avatar"
             src="/static/images/avatar/1.jpg"
             sx={{ width: 56, height: 56 }}
             onClick={() =>  navigate("/profile")}

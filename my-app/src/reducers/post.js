@@ -1,5 +1,5 @@
 const initialState = {
-    posts: [],
+    posts: {},
   };
   
   let postReducer = (state = initialState, action) => {
@@ -10,7 +10,7 @@ const initialState = {
   
       case "NEW_POST":
         const { post } = payload;       
-        return { posts: [...state.posts , post] };
+        return {  ...state , post };
   
       case "DELETE_POST":
         const { delePost } = payload;
@@ -46,7 +46,7 @@ const initialState = {
   export const delPost = (data) => {
     return {
       type: "DELETE_POST",
-      payload: {deletepost: data[0]._id },
+      payload: {deletepost: data._id },
     };
   };
 
@@ -54,7 +54,7 @@ const initialState = {
    
     return {
       type: "UPDATE_POST",
-      payload: {Updpost: data[0]._id },
+      payload: {Updpost: data._id },
     };
   };
   

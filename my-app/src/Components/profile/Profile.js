@@ -67,13 +67,12 @@ const Profile = () => {
   };
 
   const deletePost = async (id) => {
-    console.log(id);
+    console.log(state.signIn.token);
     try {
       const result = await axios.delete(
         `${
           process.env.REACT_APP_BASE_URL
         }/posts/delete?isDeleted=${true}&_id=${id}`,
-
         {
           headers: {
             Authorization: `Bearer ${state.signIn.token}`,
@@ -85,30 +84,39 @@ const Profile = () => {
     } catch (error) {
       console.log(error);
     }
+    allPosts();
   };
+
 
   return (
       <>
       <Nav />
     <div className="profile">
       <h1>profile page</h1>
-      {(state.postReducer.posts.length &&
+      {!state.postReducer.posts.length ? <h1 className="loading-icon">You don't have any post</h1> :
         state.postReducer.posts.map((items) => {
+          { console.log(items)}
           return (
             <div key={items._id} className="post-card">
+
               <img src={items.img} alt="img" />
               <h2>{items.desc}</h2>
               <FcFullTrash onClick={() => deletePost(items._id)} className="post-icon"/>
-              <FcLike className="post-icon" />
+              <FcLike className="post-icon"/>
             </div>
           );
-        })) || <h1>loading...</h1>}
-        <div>
-        <FileBase
-          type="file"
-          multiple={false}
-          onDone={({ base64 }) => setPost({ ...post, img: base64 })}
-        />
+        }) || (
+       <h1 className="loading-icon">loading ....</h1>
+      )}
+      <div>
+      <FileBase
+        type="file"
+        multiple={false}
+        onDone={({ base64, base64: string  }) =>
+          setPost({ ...post, img: base64 })
+        }
+      />
+         
         <FcStackOfPhotos />
         <input
           type="text"
@@ -122,7 +130,8 @@ const Profile = () => {
       </div>
     </div>
     </>
-  );
+  )
+  
 };
 
 export default Profile;
