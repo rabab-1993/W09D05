@@ -1,0 +1,19 @@
+.registe {
+    text-align: center;
+    /* display: flex;
+    justify-content: center; */
+    height: 100%;
+
+}
+
+.registe{
+    margin-top: 50px;
+}
+
+.register-form {
+    width: 27rem;
+    padding: 3rem;
+    margin: auto;
+   margin-top: 105px;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

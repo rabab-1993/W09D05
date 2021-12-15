@@ -6,7 +6,8 @@ import './App.css';
 import Post  from "./Components/post/Post";
 import Profile from "./Components/profile/Profile"
 import Activate from "./Components/account/Activate";
-
+import Forget from './Components/forgetPass/Forget'
+import ResetPass from "./Components/forgetPass/ResetPass";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
         <Route exact path="/posts" element={<Post />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/activate/" element={<Activate />} />
+        <Route exact path="/forget" element={<Forget />} />
+        <Route exact path="/reset-pass/:id" element={<ResetPass />} />
       </Routes>
     </>
   );

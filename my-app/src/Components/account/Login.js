@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
 import { logIn } from "../../reducers/login";
 import { Form, Button, ButtonToolbar } from "rsuite";
 import { FcGoogle } from "react-icons/fc";
@@ -51,9 +54,13 @@ const Login = () => {
       console.log(error);
     }
   };
+  
 
   let toRegisterPage = () => {
     navigate("/register");
+  };
+  let forgetPage = () => {
+    navigate("/forget");
   };
   // let toPostPage = () => {
   //   userLog();
@@ -74,7 +81,7 @@ const Login = () => {
             <Button appearance="primary" onClick={userLog}>
               Login
             </Button>
-            <Button appearance="link">Forgot password?</Button>
+            <Button appearance="link" onClick={forgetPage}>Forgot password?</Button>
           </ButtonToolbar>
         </Form.Group>
       </Form>

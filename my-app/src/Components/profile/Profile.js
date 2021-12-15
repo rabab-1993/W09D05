@@ -5,6 +5,7 @@ import FileBase from "react-file-base64";
 import { getPost, newPost, delPost } from "../../reducers/post";
 import Nav from "../header/Nav";
 import { FcStackOfPhotos, FcFullTrash, FcLike } from "react-icons/fc";
+
 import "./style.css";
 
 const Profile = () => {

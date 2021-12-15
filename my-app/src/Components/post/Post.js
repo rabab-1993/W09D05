@@ -147,12 +147,12 @@ console.log(result.data);
           return (
             <div key={items._id} className="post-card">
               <img src={items.img} alt="img" />
-              <h2>{items.desc}</h2>
               <FcFullTrash
                 onClick={() => deletePost(items._id)}
                 className="post-icon"
               />
               <FcLike className="post-icon" />
+              <h2>{items.desc}</h2>
               <input type="text" name="" id="" 
               value={comment.comment}
               placeholder="Add a comment"
