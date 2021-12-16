@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
 import "./style.css";
 const Forget = () => {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
   const forgetPass = async () => {
-      console.log(email);
+    console.log(email);
     try {
       const result = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/user/forget`,
-        {email}
+        { email }
       );
 
       console.log(result);
@@ -21,17 +25,27 @@ const Forget = () => {
 
   return (
     <div>
-        <h1>Enter your email</h1>
-      <input
-        type="email"
-        name="email"
-        id=""
-        placeholder="email"
-       defaultValue={email}
-        onChange={(ev) => setEmail(ev.target.value)}
-      />
-      <button onClick={forgetPass}>Send</button>
-      <h1>{msg}</h1>
+      <Container>
+        <Stack spacing={5} className="register-form">
+          <h1>Enter your email</h1>
+          {/* Email Field */}
+          <TextField
+            required
+            id="standard-required"
+            label="Email"
+            type="email"
+            variant="standard"
+            value={email}
+            onChange={(ev) => setEmail(ev.target.value)}
+          />
+
+          <Button appearance="primary" onClick={forgetPass}>
+            Submit
+          </Button>
+
+          <h1>{msg}</h1>
+        </Stack>
+      </Container>
     </div>
   );
 };

@@ -26,7 +26,7 @@ const Register = () => {
         register
       );
       console.log(result.data);
-    //   navigate("/")
+      navigate("/")
       setMsg("Active your Email");
      
     } catch (error) {

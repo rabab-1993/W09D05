@@ -1,8 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
 const Activate = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
     useEffect(() => {
         regiset()
     }, [])
@@ -10,17 +12,7 @@ const Activate = () => {
         try {
           const result = await axios.post(
             `${process.env.REACT_APP_BASE_URL}/user/activated`,
-    
-            // {
-            //   headers: {
-            //     Authorization: `Bearer ${state.signIn.token}`,
-            //   },
-            // }
           );
-          const data = {
-            posts: result.data,
-          };
-        //   dispatch(getPost(data));
           console.log(result.data);
         } catch (error) {
           console.log(error);
@@ -28,7 +20,13 @@ const Activate = () => {
       };
     return (
         <div>
+           <Stack spacing={5} className="register-form">
+
           <h1>Email has been Activated</h1>  
+          <Button appearance="primary" onClick={  navigate("/")}>
+            Login Page
+          </Button>
+           </Stack>
         </div>
     )
 }

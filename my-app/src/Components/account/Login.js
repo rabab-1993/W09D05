@@ -7,7 +7,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import { logIn } from "../../reducers/login";
-import { Form, Button, ButtonToolbar } from "rsuite";
 import { FcGoogle } from "react-icons/fc";
 import "./login.css";
 
@@ -56,45 +55,52 @@ const Login = () => {
   };
   
 
-  let toRegisterPage = () => {
-    navigate("/register");
-  };
-  let forgetPage = () => {
-    navigate("/forget");
-  };
-  // let toPostPage = () => {
-  //   userLog();
-  // };
   return (
     <div>
-      <Form fluid onChange={setLogIn} value={log}>
-        <Form.Group>
-          <Form.ControlLabel>Username or email address</Form.ControlLabel>
-          <Form.Control name="email" />
-        </Form.Group>
-        <Form.Group>
-          <Form.ControlLabel>Password</Form.ControlLabel>
-          <Form.Control name="password" type="password" autoComplete="off" />
-        </Form.Group>
-        <Form.Group>
-          <ButtonToolbar>
-            <Button appearance="primary" onClick={userLog}>
-              Login
-            </Button>
-            <Button appearance="link" onClick={forgetPage}>Forgot password?</Button>
-          </ButtonToolbar>
-        </Form.Group>
-      </Form>
+      <Container>
+        <Stack spacing={5} className="register-form">
+          {/* Email Field */}
+          <TextField
+            required
+            id="standard-required"
+            label="Email"
+            type="email"
+            variant="standard"
+            value={log.email}
+            onChange={(ev) => setLogIn({ ...log, email: ev.target.value })}
+          />
+
+          {/* Password Field */}
+          <TextField
+            required
+            id="standard-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            variant="standard"
+            value={log.password}
+            onChange={(ev) => setLogIn({ ...log, password: ev.target.value })}
+          />
+
+          <Button appearance="primary" onClick={userLog}>
+            Login
+          </Button>
+          <Link to="/forget" className="register">
+            Forgot password?
+          </Link>
+
       <h3>
         <FcGoogle className="icon" onClick={handleGoogle} />
         Log in with google
       </h3>
-      <h1>
+      <h4>
         Dosn't have an account?
-        <Link to="/register" onClick={toRegisterPage} className="register">
+        <Link to="/register" className="register">
           Register
         </Link>
-      </h1>
+      </h4>
+        </Stack>
+      </Container>
     </div>
   );
 };

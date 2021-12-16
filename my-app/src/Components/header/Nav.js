@@ -23,7 +23,6 @@ const Nav = () => {
   const logOut = () => {
     localStorage.clear();
     navigate("/");
-    // window.location.reload(false);
   };
   return (
     <div className="nav">
