@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+import { Button } from 'antd';
 const Activate = () => {
   const navigate = useNavigate();
     useEffect(() => {
@@ -20,13 +19,13 @@ const Activate = () => {
       };
     return (
         <div>
-           <Stack spacing={5} className="register-form">
+           <>
 
           <h1>Email has been Activated</h1>  
-          <Button appearance="primary" onClick={  navigate("/")}>
+          <Button onClick={  navigate("/")}>
             Login Page
           </Button>
-           </Stack>
+           </>
         </div>
     )
 }

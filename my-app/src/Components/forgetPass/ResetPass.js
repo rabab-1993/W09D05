@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { Button, Input } from "antd";
 const ResetPass = () => {
   const [Password, setPass] = useState("");
 
@@ -21,20 +20,13 @@ const ResetPass = () => {
   };
   return (
     <div>
-      <TextField
-        required
-        id="standard-password-input"
-        label="Password"
-        type="password"
-        autoComplete="current-password"
-        variant="standard"
+      <Input.Password
+        placeholder="password"
         value={Password.Password}
         onChange={(ev) => setPass(ev.target.value)}
       />
 
-      <Button appearance="primary" onClick={passReset}>
-        Submit
-      </Button>
+      <Button onClick={passReset}>Submit</Button>
     </div>
   );
 };

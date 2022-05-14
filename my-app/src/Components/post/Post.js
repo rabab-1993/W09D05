@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { Spin, Image, Input, Button, Modal } from "antd";
 import { getPost, newPost, delPost, UpdatePost } from "../../reducers/post";
-import { Loader } from "rsuite";
 import FileBase from "react-file-base64";
-import { FcFullTrash, FcLike, FcPlus } from "react-icons/fc";
-import Box from "@mui/material/Box";
-import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
+import { FcFullTrash, FcLike, FcPlus, FcLikePlaceholder } from "react-icons/fc";
 import { AiOutlineEdit } from "react-icons/ai";
-import {
-  TextField,
-  Button,
-  DialogContent,
-  DialogActions,
-  Dialog,
-} from "@mui/material";
-
 import "./style.css";
+
+//////////////////////
 const Post = () => {
   const [text, setText] = useState("");
   const [comment, setComment] = useState("");
-  const [open, setOpen] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [post, setPost] = useState({
     img: "",
     desc: "",
@@ -34,6 +25,7 @@ const Post = () => {
 
   useEffect(() => {
     allPosts();
+    // eslint-disable-next-line
   }, []);
 
   const allPosts = async () => {
@@ -86,9 +78,7 @@ const Post = () => {
     console.log(state.signIn.token);
     try {
       const result = await axios.delete(
-        `${
-          process.env.REACT_APP_BASE_URL
-        }/posts/delete?isDeleted=${true}&_id=${id}`,
+        `${process.env.REACT_APP_BASE_URL}/posts/delete?adminId=${state.signIn.id}&_id=${id}`,
         {
           headers: {
             Authorization: `Bearer ${state.signIn.token}`,
@@ -103,15 +93,11 @@ const Post = () => {
     allPosts();
   };
 
-  const update = async (id) => {
+  const updateText = async (id) => {
+    console.log(id);
     try {
       const result = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/posts/update`,
-        {
-       text,
-          _id: id,
-        },
-
+        `${process.env.REACT_APP_BASE_URL}/posts/update?desc=${text}&_id=${id}`,
         {
           headers: {
             Authorization: `Bearer ${state.signIn.token}`,
@@ -150,100 +136,142 @@ const Post = () => {
     }
     allPosts();
   };
-  const handleAddPost = () => {
-    addPost();
-    setOpen(false);
-  };
-  const handleClickOpen = () => {
-    setOpen(true);
+
+  const addLikes = async (id) => {
+    try {
+      const result = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/like/add`,
+        {
+          user: state.signIn.id,
+          post: id,
+        },
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    allPosts();
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const removeLikes = async (id) => {
+    try {
+      const result = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/like/remove?likeId=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+    allPosts();
+  };
+
+  // for openning a model
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    addPost();
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
   };
 
   return (
     <div className="post">
       <h1>posts</h1>
-      <Box>
-        <ImageList variant="masonry" cols={3} gap={8}>
-          {(state.postReducer.posts.length &&
-            state.postReducer.posts.map((items) => {
-              return (
-                <ImageListItem key={items._id} className="post-card">
-                  <img src={items.img} alt="img" />
-                  <FcFullTrash
-                    onClick={() => deletePost(items._id)}
-                    className="post-icon"
-                  />
-                  <FcLike className="post-icon" />
-                  <h2>
-                    {" "}
-                    Title:{items.desc}
-                    <TextField
-                      autoFocus
-                      margin="dense"
-                      id=""
-                      name=""
-                      label="Add Description"
-                      type="text"
-                      variant="standard"
-                      value={text.text}
-                      onChange={(ev) => setText(ev.target.value)}
-                    />
-                    <Button onClick={update}>Edit</Button>
-                  </h2>
-                  <input
-                    type="text"
-                    name=""
-                    id=""
-                    value={comment.comment}
-                    placeholder="Add a comment"
-                    onChange={(ev) => setComment(ev.target.value)}
-                  />
-                  <button onClick={() => addComment(items._id)}>Post</button>
-                </ImageListItem>
-              );
-            })) || (
-            <Loader
-              size="lg"
-              content="loading..."
-              inverse
-              center
-              className="loading-icon"
-            />
-          )}
-        </ImageList>
-      </Box>
-      <FcPlus className="add" onClick={handleClickOpen} />
-      <Dialog open={open} onClose={handleClose}>
-        <DialogContent>
-          <FileBase
-            type="file"
-            multiple={false}
-            onDone={({ base64, base64: string }) =>
-              setPost({ ...post, img: base64 })
+      <>
+        {(state.postReducer.posts.length &&
+          state.postReducer.posts.map((items) => {
+            {
+              console.log(items);
             }
-          />
+            return (
+              <div key={items._id} className="post-card">
+                <Image src={items.img} alt="img" />
+                <FcFullTrash
+                  onClick={() => deletePost(items._id)}
+                  className="post-icon"
+                />
+                {items.likes.user === state.signIn.id ? (
+                  <FcLike
+                    // key={indx}
+                    className="post-icon"
+                    // onClick={() => console.log(like._id)}
+                    onClick={() => removeLikes(items.likes._id)}
+                  />
+                ) : (
+                  <FcLikePlaceholder
+                    // key={indx}
+                    className="post-icon"
+                    onClick={() => addLikes(items._id)}
+                  />
+                )}
+                {/* {items.likes.map((like, indx) => {
+                  {console.log(like.user)}
+                  like.user === state.signIn.id ? (
+                    <FcLike
+                      className="post-icon"
+                      onClick={() => removeLikes(like._id)}
+                    />
+                  ) : (
+                    <FcLikePlaceholder
+                      className="post-icon"
+                      onClick={() => addLikes(items._id)}
+                    />
+                  )
+                })} */}
 
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            name="desc"
-            label="Add Description"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={post.desc}
-            onChange={(ev) => setPost({ ...post, desc: ev.target.value })}
-          />
-          <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleAddPost}>ADD</Button>
-          </DialogActions>
-        </DialogContent>
-      </Dialog>
+                {items.likes.length}
+
+                <h2>
+                  {" "}
+                  Title:{items.desc}
+                  <Input
+                    value={text.text}
+                    onChange={(ev) => setText(ev.target.value)}
+                  />
+                  <Button onClick={() => updateText(items._id)}>
+                    <AiOutlineEdit />
+                  </Button>
+                </h2>
+                <Input
+                  value={comment.comment}
+                  placeholder="Add a comment"
+                  onChange={(ev) => setComment(ev.target.value)}
+                />
+                <Button onClick={() => addComment(items._id)}>Post</Button>
+              </div>
+            );
+          })) || <Spin size="large" />}
+      </>
+      <FcPlus className="add" onClick={showModal} />
+      <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <FileBase
+          type="file"
+          multiple={false}
+          onDone={({ base64, base64: string }) =>
+            setPost({ ...post, img: base64 })
+          }
+        />
+
+        <Input
+          value={post.desc}
+          onChange={(ev) => setPost({ ...post, desc: ev.target.value })}
+        />
+      </Modal>
     </div>
   );
 };

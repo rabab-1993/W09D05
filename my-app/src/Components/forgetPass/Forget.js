@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
+import { Button, Input } from "antd";
+
 import "./style.css";
 const Forget = () => {
   const [email, setEmail] = useState("");
@@ -25,27 +23,17 @@ const Forget = () => {
 
   return (
     <div>
-      <Container>
-        <Stack spacing={5} className="register-form">
-          <h1>Enter your email</h1>
-          {/* Email Field */}
-          <TextField
-            required
-            id="standard-required"
-            label="Email"
-            type="email"
-            variant="standard"
-            value={email}
-            onChange={(ev) => setEmail(ev.target.value)}
-          />
+      <h1>Enter your email</h1>
+      {/* Email Field */}
+      <Input
+        placeholder="default size"
+        value={email}
+        onChange={(ev) => setEmail(ev.target.value)}
+      />
 
-          <Button appearance="primary" onClick={forgetPass}>
-            Submit
-          </Button>
+      <Button onClick={forgetPass}>Submit</Button>
 
-          <h1>{msg}</h1>
-        </Stack>
-      </Container>
+      <h1>{msg}</h1>
     </div>
   );
 };

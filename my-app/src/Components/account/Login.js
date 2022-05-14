@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
+import { Button, Input, Form } from "antd";
 import { logIn } from "../../reducers/login";
 import { FcGoogle } from "react-icons/fc";
 import "./login.css";
@@ -53,54 +50,80 @@ const Login = () => {
       console.log(error);
     }
   };
-  
 
   return (
-    <div>
-      <Container>
-        <Stack spacing={5} className="register-form">
-          {/* Email Field */}
-          <TextField
-            required
-            id="standard-required"
-            label="Email"
-            type="email"
-            variant="standard"
+    <div className="login">
+      <Form
+      className="login-form"
+        name="basic"
+        labelCol={{
+          span: 6,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+        // initialValues={{
+        //   remember: true,
+        // }}
+        autoComplete="off"
+      >
+        {/* Email Field */}
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please input your email!",
+            },
+          ]}
+        >
+          <Input
             value={log.email}
             onChange={(ev) => setLogIn({ ...log, email: ev.target.value })}
           />
-
-          {/* Password Field */}
-          <TextField
-            required
-            id="standard-password-input"
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            variant="standard"
+        </Form.Item>
+        {/* Password Field */}
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please input your password!",
+            },
+          ]}
+        >
+          <Input.Password
             value={log.password}
             onChange={(ev) => setLogIn({ ...log, password: ev.target.value })}
           />
-
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            offset: 8,
+            span: 16,
+          }}
+        >
           <Button appearance="primary" onClick={userLog}>
             Login
           </Button>
-          <Link to="/forget" className="register">
-            Forgot password?
-          </Link>
-
-      <h3>
-        <FcGoogle className="icon" onClick={handleGoogle} />
-        Log in with google
-      </h3>
-      <h4>
-        Dosn't have an account?
-        <Link to="/register" className="register">
-          Register
+        </Form.Item>
+        <Link to="/forget" className="register">
+          Forgot password?
         </Link>
-      </h4>
-        </Stack>
-      </Container>
+
+        <h3>
+          <FcGoogle className="icon" onClick={handleGoogle} />
+          Log in with google
+        </h3>
+        <h4>
+          Dosn't have an account?
+          <Link to="/register" className="register">
+            Register
+          </Link>
+        </h4>
+      </Form>
     </div>
   );
 };
