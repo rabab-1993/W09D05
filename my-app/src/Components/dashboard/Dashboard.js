@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { List, message, Avatar, Skeleton, Divider } from "antd";
 import Nav from "../header/Nav";
+import { getPost, delPost } from "../../reducers/post";
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
   useEffect(() => {
     allUsers();
+    allPosts();
+
     // eslint-disable-next-line
   }, []);
   const state = useSelector((state) => {
     return state;
   });
+  const dispatch = useDispatch();
+
   const allUsers = async () => {
     try {
       const result = await axios.get(
@@ -22,15 +31,44 @@ const Dashboard = () => {
           },
         }
       );
+      setData([...data, ...result.data]);
+      setLoading(false);
       console.log(result.data);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const allPosts = async () => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/posts`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+      const data = {
+        posts: result.data,
+      };
+      dispatch(getPost(data));
+      console.log(state);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <>
       <Nav />
       <div>Dashboard</div>
+      {data.length &&
+        data.map((user) => {
+          return <h4>{data.userName}</h4>;
+        })}
     </>
   );
 };

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { ImHome } from "react-icons/im";
+import { ImHome, ImSearch } from "react-icons/im";
 import { MdOutlineLogout } from "react-icons/md";
-import { Menu, Avatar } from "antd";
+import { Menu, Avatar, Input } from "antd";
 import "./style.css";
 
 const Nav = () => {
@@ -14,13 +14,11 @@ const Nav = () => {
   // eslint-disable-next-line
   const [isLog, setIsLog] = useState();
   const [user, setUser] = useState();
-  // eslint-disable-next-line
-  const [anchorElUser, setAnchorElUser] = useState(null);
   const [info, setInfo] = useState([]);
   const [current, setCurrent] = React.useState("mail");
 
   const onClick = (e) => {
-    console.log("click ", e);
+    // console.log("click ", e);
     setCurrent(e.key);
   };
   const navigate = useNavigate();
@@ -43,7 +41,6 @@ const Nav = () => {
     navigate("/");
   };
 
-  // eslint-disable-next-line
   const userInfo = async () => {
     try {
       const result = await axios.get(
@@ -61,14 +58,37 @@ const Nav = () => {
     }
   };
 
+  
+  const userAccount = async (name) => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/user/account?names=${name}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+      console.log(name);
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const items = [
     {
       key: "SubMenu",
-      icon: <Avatar />,
+      icon: <Avatar src={info.avatar} />,
       children: [
         {
-          label: <Link to={`/profile`}>Account</Link>,
+          label: <Link to={`/profile`}>profile</Link>,
           key: "account",
+        },
+        {
+          label: <Link to={`/settings`}>Settings</Link>,
+          key: "settings",
         },
         {
           label:
@@ -97,10 +117,17 @@ const Nav = () => {
     <div className="nav">
       {user ? (
         <>
+          <Input
+            size="large"
+            onChange={(ev) => userAccount(ev.target.value)}
+            placeholder="search"
+            className="search-input"
+            prefix={<ImSearch />}
+          />
+
           <Link to="/posts" onClick={() => navigate("/posts")}>
             <ImHome />
           </Link>
-
           <Menu
             onClick={onClick}
             selectedKeys={[current]}

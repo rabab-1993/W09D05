@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin, Image, Input, Button, Modal } from "antd";
+import { Spin, Image, Input, Button, Modal, Avatar } from "antd";
 import { getPost, newPost, delPost, UpdatePost } from "../../reducers/post";
 import FileBase from "react-file-base64";
-import { FcFullTrash, FcLike, FcPlus, FcLikePlaceholder } from "react-icons/fc";
+import { FcFullTrash, FcPlus } from "react-icons/fc";
 import { AiOutlineEdit } from "react-icons/ai";
 import "./style.css";
+import Like from "./Like";
+import Comments from "./Comments";
 
 //////////////////////
 const Post = () => {
   const [text, setText] = useState("");
-  const [comment, setComment] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [post, setPost] = useState({
     img: "",
@@ -43,7 +45,6 @@ const Post = () => {
         posts: result.data,
       };
       dispatch(getPost(data));
-      console.log(state);
     } catch (error) {
       console.log(error);
     }
@@ -112,68 +113,6 @@ const Post = () => {
     allPosts();
   };
 
-  const addComment = async (id) => {
-    try {
-      const result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/comment/add`,
-        {
-          comment: comment,
-          postId: id,
-          userId: state.signIn.id,
-        },
-
-        {
-          headers: {
-            Authorization: `Bearer ${state.signIn.token}`,
-          },
-        }
-      );
-
-      setComment("");
-      console.log(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-    allPosts();
-  };
-
-  const addLikes = async (id) => {
-    try {
-      const result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/like/add`,
-        {
-          user: state.signIn.id,
-          post: id,
-        },
-
-        {
-          headers: {
-            Authorization: `Bearer ${state.signIn.token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-    allPosts();
-  };
-
-  const removeLikes = async (id) => {
-    try {
-      const result = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/like/remove?likeId=${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${state.signIn.token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-    allPosts();
-  };
-
   // for openning a model
 
   const showModal = () => {
@@ -200,44 +139,22 @@ const Post = () => {
             }
             return (
               <div key={items._id} className="post-card">
+                <Link to={`/profile`}>
+                  <div className="user-info">
+                    <Avatar size={40} src={items.user.avatar} />
+                    <h4>{items.user.userName}</h4>
+                  </div>
+                </Link>
                 <Image src={items.img} alt="img" />
                 <FcFullTrash
                   onClick={() => deletePost(items._id)}
                   className="post-icon"
                 />
-                {items.likes.user === state.signIn.id ? (
-                  <FcLike
-                    // key={indx}
-                    className="post-icon"
-                    // onClick={() => console.log(like._id)}
-                    onClick={() => removeLikes(items.likes._id)}
-                  />
-                ) : (
-                  <FcLikePlaceholder
-                    // key={indx}
-                    className="post-icon"
-                    onClick={() => addLikes(items._id)}
-                  />
-                )}
-                {/* {items.likes.map((like, indx) => {
-                  {console.log(like.user)}
-                  like.user === state.signIn.id ? (
-                    <FcLike
-                      className="post-icon"
-                      onClick={() => removeLikes(like._id)}
-                    />
-                  ) : (
-                    <FcLikePlaceholder
-                      className="post-icon"
-                      onClick={() => addLikes(items._id)}
-                    />
-                  )
-                })} */}
 
+                <Like postId={items._id} allPosts={allPosts} />
                 {items.likes.length}
 
                 <h2>
-                  {" "}
                   Title:{items.desc}
                   <Input
                     value={text.text}
@@ -247,12 +164,8 @@ const Post = () => {
                     <AiOutlineEdit />
                   </Button>
                 </h2>
-                <Input
-                  value={comment.comment}
-                  placeholder="Add a comment"
-                  onChange={(ev) => setComment(ev.target.value)}
-                />
-                <Button onClick={() => addComment(items._id)}>Post</Button>
+                <h4>Comments({items.comments.length})</h4>
+                <Comments allPosts={allPosts} postId={items._id} />
               </div>
             );
           })) || <Spin size="large" />}

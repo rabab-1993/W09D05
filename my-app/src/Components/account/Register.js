@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Button, Input } from "antd";
+import { Button, Input, Form } from "antd";
 import "./register.css";
 
 const Register = () => {
@@ -31,40 +31,85 @@ const Register = () => {
   return (
     <div className="registe">
       <h1>Creat an Account</h1>
-      <>
+      <Form
+        className="register-form "
+        name="basic"
+        labelCol={{
+          span: 6,
+        }}
+        wrapperCol={{
+          span: 16,
+        }}
+       
+        autoComplete="off"
+      >
         {/* User Name Field */}
-        <Input
+        <Form.Item
           label="User Name"
-          value={register.userName}
-          onChange={(ev) =>
-            setRegister({ ...register, userName: ev.target.value })
-          }
-        />
+          name="userName"
+          rules={[
+            {
+              required: true,
+              message: "Please Enter your User Name!",
+            },
+          ]}
+        >
+          <Input
+            value={register.userName}
+            onChange={(ev) =>
+              setRegister({ ...register, userName: ev.target.value })
+            }
+          />
+        </Form.Item>
 
         {/* Email Field */}
-        <Input
+        <Form.Item
           label="Email"
-          type="email"
-          value={register.email}
-          onChange={(ev) =>
-            setRegister({ ...register, email: ev.target.value })
-          }
-        />
+          name="email"
+          rules={[
+            {
+              required: true,
+              message: "Please Enter your Email!",
+            },
+          ]}
+        >
+          <Input
+            value={register.email}
+            onChange={(ev) =>
+              setRegister({ ...register, email: ev.target.value })
+            }
+          />
+        </Form.Item>
 
         {/* Password Field */}
-        <Input
+        <Form.Item
           label="Password"
-          type="password"
-          value={register.password}
-          onChange={(ev) =>
-            setRegister({ ...register, password: ev.target.value })
-          }
-        />
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please Enter your password!",
+            },
+          ]}
+        >
+          <Input.Password
+            value={register.password}
+            onChange={(ev) =>
+              setRegister({ ...register, password: ev.target.value })
+            }
+          />
+        </Form.Item>
 
         <Button appearance="primary" onClick={creatUser}>
           Register
         </Button>
-      </>
+        <h4>
+          You have an account?
+          <Link to="/" className="register">
+            Log In
+          </Link>
+        </h4>
+      </Form>
       <h1>{msg}</h1>
     </div>
   );

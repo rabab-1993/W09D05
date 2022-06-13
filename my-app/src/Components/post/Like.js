@@ -1,35 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
-const Like = ({Likes}) => {
+const Like = ({ postId, allPosts }) => {
   const state = useSelector((state) => {
     return state;
   });
 
-  const allLikes = async () => {
-    try {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/like/profile?_id=${state.signIn.id}`,
-
-        {
-          headers: {
-            Authorization: `Bearer ${state.signIn.token}`,
-          },
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const addLikes = async (id) => {
     try {
-      const result = await axios.get(
+      // eslint-disable-next-line
+      const result = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/like/add`,
         {
-            user: state.signIn.id,
-            post: id,
+          user: state.signIn.id,
+          post: id,
         },
 
         {
@@ -41,13 +27,14 @@ const Like = ({Likes}) => {
     } catch (error) {
       console.log(error);
     }
+    allPosts();
   };
-  
-  const removeLikes = async () => {
-    try {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/like/profile?_id=${state.signIn.id}`,
 
+  const removeLikes = async (id) => {
+    try {
+      // eslint-disable-next-line
+      const result = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/like/remove?likeId=${id}`,
         {
           headers: {
             Authorization: `Bearer ${state.signIn.token}`,
@@ -57,11 +44,34 @@ const Like = ({Likes}) => {
     } catch (error) {
       console.log(error);
     }
+    allPosts();
   };
 
+  return (
+    <>
+      {/* {items.likes.user === state.signIn.id ? (
+                  <FcLike
+                    // key={indx}
+                    className="post-icon"
+                    // onClick={() => console.log(like._id)}
+                    onClick={() => removeLikes(items.likes._id)}
+                  />
+                ) : (
+                  <FcLikePlaceholder
+                    // key={indx}
+                    className="post-icon"
+                    onClick={() => addLikes(items._id)}
+                  />
+                )} */}
 
-
-  return <div>Like</div>;
+      <FcLike
+        // key={indx}
+        className="post-icon"
+        // onClick={() => console.log(like._id)}
+        onClick={() => addLikes(postId)}
+      />
+    </>
+  );
 };
 
 export default Like;

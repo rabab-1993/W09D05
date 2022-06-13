@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +20,17 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const userId = state.signIn.id;
+  useEffect(() => {
+    if (userId) {
+      navigate("/posts");
+    } else {
+      navigate("/");
+    }
+    // eslint-disable-next-line
+  }, []);
+
   //   A handle function to login with google
   const handleGoogle = async () => {
     try {
@@ -54,7 +65,7 @@ const Login = () => {
   return (
     <div className="login">
       <Form
-      className="login-form"
+        className="login-form"
         name="basic"
         labelCol={{
           span: 6,

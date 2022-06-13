@@ -4,12 +4,14 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    
+    color: #fff;
+
 }
 
 .login-form {
-    background: rgb(229, 208, 208);
+    background: #14213d;
     /* margin-top: 20rem; */
+    color: #fca311;
     height: 25rem;
     width: 27rem;
     border-radius: 10px;
@@ -21,7 +23,7 @@
 }
 
 .register {
-    color: turquoise;
+    color: #fff;
     text-decoration: underline;
     font-size: 17px;
 }

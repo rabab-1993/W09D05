@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import FileBase from "react-file-base64";
+import { List, Avatar, Divider } from "antd";
+
 import { getPost, newPost, delPost } from "../../reducers/post";
 import Nav from "../header/Nav";
 import { FcStackOfPhotos, FcFullTrash, FcLike } from "react-icons/fc";
@@ -13,14 +15,53 @@ const Profile = () => {
     img: "",
     desc: "",
   });
+  const [data, setData] = useState([]);
   useEffect(() => {
     allPosts();
+    getProfile();
     // eslint-disable-next-line
   }, []);
+
   const dispatch = useDispatch();
   const state = useSelector((state) => {
     return state;
   });
+
+  const getProfile = async (id) => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${id}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+      console.log(result.data);
+      setData(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateProfile = async () => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${state.signIn.id}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+      console.log(result.data);
+      setData(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const allPosts = async (id) => {
     try {
@@ -94,13 +135,20 @@ const Profile = () => {
       <Nav />
       <div className="profile">
         <h1>profile page</h1>
+        <div>
+          <Avatar
+            size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }}
+            src={data.avatar}
+          />
+          <h2>{data.userName}</h2>
+        </div>
         {!state.postReducer.posts.length ? (
           <h1 className="loading-icon">You don't have any post</h1>
         ) : (
           state.postReducer.posts.map((items) => {
-            {
-              console.log(items);
-            }
+            // {
+            //   console.log(items);
+            // }
             return (
               <div key={items._id} className="post-card">
                 <img src={items.img} alt="img" />
@@ -114,7 +162,7 @@ const Profile = () => {
             );
           }) || <h1 className="loading-icon">loading ....</h1>
         )}
-        <div>
+        {/* <>
           <FileBase
             type="file"
             multiple={false}
@@ -133,7 +181,7 @@ const Profile = () => {
             onChange={(ev) => setPost({ ...post, desc: ev.target.value })}
           />
           <button onClick={addPost}>ADD</button>
-        </div>
+        </> */}
       </div>
     </>
   );
