@@ -1,5 +1,6 @@
 {
   "name": "my-app",
+  "homepage": "https://rabab-1993.github.io/W09D05/my-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,6 +11,7 @@
     "@testing-library/user-event": "^12.8.3",
     "antd": "^4.20.0",
     "axios": "^0.24.0",
+    "gh-pages": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-file-base64": "^1.0.3",
@@ -17,7 +19,7 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.0.2",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "web-vitals": "^1.1.2"
@@ -26,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

@@ -97,12 +97,13 @@ const Comments = ({ allPosts, postId }) => {
           </div>
         );
       })}
+      
       <Input
         value={comment}
         placeholder="Add a comment"
         style={{
-            width: 375,
-          }}
+          width: 375,
+        }}
         onChange={(ev) => setComment(ev.target.value)}
       />
       <Button onClick={() => addComment(postId)}>Post</Button>
