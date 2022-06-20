@@ -5,10 +5,7 @@ import { Input, Button, Avatar } from "antd";
 import { FaTimes } from "react-icons/fa";
 
 const Comments = ({ allPosts, postId }) => {
-  useEffect(() => {
-    allComments();
-    // eslint-disable-next-line
-  }, []);
+ 
 
   const [comment, setComment] = useState("");
   const [coment, setComent] = useState([]);
@@ -16,6 +13,11 @@ const Comments = ({ allPosts, postId }) => {
     return state;
   });
 
+  useEffect(() => {
+    allComments();
+    // eslint-disable-next-line
+  }, []);
+  
   const allComments = async () => {
     try {
       const result = await axios.get(
