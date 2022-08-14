@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import FileBase from "react-file-base64";
 import { List, Avatar, Divider } from "antd";
-
 import { getPost, newPost, delPost } from "../../reducers/post";
 import Nav from "../header/Nav";
 import { FcStackOfPhotos, FcFullTrash, FcLike } from "react-icons/fc";
@@ -11,6 +11,7 @@ import { FcStackOfPhotos, FcFullTrash, FcLike } from "react-icons/fc";
 import "./style.css";
 
 const Profile = () => {
+  let { userName } = useParams();
   const [post, setPost] = useState({
     img: "",
     desc: "",
@@ -27,10 +28,28 @@ const Profile = () => {
     return state;
   });
 
-  const getProfile = async (id) => {
+  const getProfile = async () => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${id}`,
+        `${process.env.REACT_APP_BASE_URL}/user/profile?userName=${userName}`,
+
+        {
+          headers: {
+            Authorization: `Bearer ${state.signIn.token}`,
+          },
+        }
+      );
+     
+      setData(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateProfile = async () => {
+    try {
+      const result = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${data._id}`,
 
         {
           headers: {
@@ -45,28 +64,10 @@ const Profile = () => {
     }
   };
 
-  const updateProfile = async () => {
-    try {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${state.signIn.id}`,
-
-        {
-          headers: {
-            Authorization: `Bearer ${state.signIn.token}`,
-          },
-        }
-      );
-      console.log(result.data);
-      setData(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   const allPosts = async (id) => {
     try {
       const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/posts/profile?user=${state.signIn.id}`,
+        `${process.env.REACT_APP_BASE_URL}/posts/profile?user=${id}`,
 
         {
           headers: {
@@ -78,35 +79,10 @@ const Profile = () => {
         posts: result.data,
       };
       dispatch(getPost(data));
-      console.log(state);
+      console.log(result.data);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const addPost = async () => {
-    try {
-      const result = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/posts/post`,
-        {
-          img: post.img,
-          desc: post.desc,
-          user: state.signIn.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${state.signIn.token}`,
-          },
-        }
-      );
-
-      dispatch(newPost({ posts: result.data }));
-
-      //   setPost("");
-    } catch (error) {
-      console.log(error);
-    }
-    allPosts();
   };
 
   const deletePost = async (id) => {
@@ -162,26 +138,6 @@ const Profile = () => {
             );
           }) || <h1 className="loading-icon">loading ....</h1>
         )}
-        {/* <>
-          <FileBase
-            type="file"
-            multiple={false}
-            onDone={({ base64, base64: string }) =>
-              setPost({ ...post, img: base64 })
-            }
-          />
-
-          <FcStackOfPhotos />
-          <input
-            type="text"
-            name="desc"
-            id=""
-            placeholder="text"
-            value={post.desc}
-            onChange={(ev) => setPost({ ...post, desc: ev.target.value })}
-          />
-          <button onClick={addPost}>ADD</button>
-        </> */}
       </div>
     </>
   );

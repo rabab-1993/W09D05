@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import "antd/dist/antd.css";
 import Home from "./Components/home/Home";
@@ -24,7 +25,7 @@ function App() {
         <Route exact path="/" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/posts" element={<Post />} />
-        <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/profile/:userName" element={<Profile />} />
         <Route exact path="/settings" element={<Settings />} />
         <Route exact path="/activate/" element={<Activate />} />
         <Route exact path="/forget" element={<Forget />} />

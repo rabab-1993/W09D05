@@ -4,9 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input, Form } from "antd";
 import { logIn } from "../../reducers/login";
-import { FcGoogle } from "react-icons/fc";
 import "./login.css";
-
+import image from "../../img/undraw_Social_interaction_re_dyjh.png";
 const Login = () => {
   const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ const Login = () => {
     password: "",
   });
 
-  const userId = state.signIn.id;
+  const userId = state.signIn.token;
   useEffect(() => {
     if (userId) {
       navigate("/posts");
@@ -30,18 +29,6 @@ const Login = () => {
     }
     // eslint-disable-next-line
   }, []);
-
-  //   A handle function to login with google
-  const handleGoogle = async () => {
-    try {
-      const result = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/user/auth/google`
-      );
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   //
   const userLog = async () => {
@@ -64,6 +51,10 @@ const Login = () => {
 
   return (
     <div className="login">
+      <h1>
+        Share It
+        <img src={image} alt="" className="img" />
+      </h1>
       <Form
         className="login-form"
         name="basic"
@@ -123,13 +114,9 @@ const Login = () => {
         <Link to="/forget" className="register">
           Forgot password?
         </Link>
-
-        <h3>
-          <FcGoogle className="icon" onClick={handleGoogle} />
-          Log in with google
-        </h3>
         <h4>
           Dosn't have an account?
+
           <Link to="/register" className="register">
             Register
           </Link>

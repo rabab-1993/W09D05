@@ -1,32 +1,37 @@
 .registe {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: #fff;
-
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
 }
 
 .registe h1 {
-    color: #fca311;
-
+  color: #fca311;
 }
-.registe h4 {
-    color: #fca311;
-    font-weight: bold;
-    font-size: large;
-    
 
+.registe h4 {
+  color: #fca311;
+  font-weight: bold;
+  font-size: large;
+  padding-top: 2rem;
 }
 
 .register-form {
-    background: #14213d;
-    /* margin-top: 20rem; */
-    color: #fca311;
-    height: 30rem;
-    width: 40rem;
-    border-radius: 10px;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: #14213d;
+  padding-top: 4rem;
+  height: 25rem;
+  width: 27rem;
+  border-radius: 10px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.register-form label {
+  color: #fca311;
+}
+
+.register-form h4 a {
+  margin-left: 0.5rem;
 }

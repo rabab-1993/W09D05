@@ -8,39 +8,34 @@ import { Menu, Avatar, Input } from "antd";
 import "./style.css";
 
 const Nav = () => {
+  // eslint-disable-next-line
+  const [user, setUser] = useState();
+  const [info, setInfo] = useState([]);
+
   const state = useSelector((state) => {
     return state;
   });
-  // eslint-disable-next-line
-  const [isLog, setIsLog] = useState();
-  const [user, setUser] = useState();
-  const [info, setInfo] = useState([]);
-  const [current, setCurrent] = React.useState("mail");
 
-  const onClick = (e) => {
-    // console.log("click ", e);
-    setCurrent(e.key);
-  };
   const navigate = useNavigate();
   // eslint-disable-next-line
+
   useEffect(() => {
     userInfo();
-    let userid = localStorage.getItem("id");
-    if (userid) {
-      setIsLog(true);
-      setUser(userid);
-    } else {
-      setIsLog(false);
-      navigate("/");
-    }
+    // let userid = localStorage.getItem("id");
+    // if (userid) {
+    //   setUser(userid);
+    // } else {
+    //   navigate("/");
+    // }
     // eslint-disable-next-line
   }, []);
 
   const logOut = () => {
-    localStorage.clear();
     navigate("/");
+    localStorage.clear();
   };
 
+  // eslint-disable-next-line
   const userInfo = async () => {
     try {
       const result = await axios.get(
@@ -58,7 +53,6 @@ const Nav = () => {
     }
   };
 
-  
   const userAccount = async (name) => {
     try {
       const result = await axios.get(
@@ -79,25 +73,37 @@ const Nav = () => {
 
   const items = [
     {
-      key: "SubMenu",
-      icon: <Avatar src={info.avatar} />,
+      // key: "SubMenu",
+      icon: info.map((item) => <Avatar key={item._id} src={item.avatar} />),
       children: [
         {
-          label: <Link to={`/profile`}>profile</Link>,
+          label: <Link to={`/profile/${info.userName}`}>profile</Link>,
           key: "account",
         },
         {
           label: <Link to={`/settings`}>Settings</Link>,
           key: "settings",
         },
+
+        // (info.role === "61a82b332b8f8814ee629667" ? (
+        //   {
+        //     label: (
+
+        //       <Link to="/dashboard">Dashboard</Link>
+        //     ),
+        //     key: "dashboard",
+        //   }
+        // ) : (
+        //   <></>
+        // )),
         {
           label:
             //  show the Dashboard bar if the user is admin
-            info.role === "61a82b332b8f8814ee629667" ? (
+            (info.role === "61a82b332b8f8814ee629667" ? (
               <Link to="/dashboard">Dashboard</Link>
-            ) : (
-              <></>
-            ),
+              ) : (
+                <></>
+            )),
           key: "dashboard",
         },
         {
@@ -115,7 +121,7 @@ const Nav = () => {
 
   return (
     <div className="nav">
-      {user ? (
+      {state.signIn.id ? (
         <>
           <Input
             size="large"
@@ -125,15 +131,10 @@ const Nav = () => {
             prefix={<ImSearch />}
           />
 
-          <Link to="/posts" onClick={() => navigate("/posts")}>
+          <Link to="/posts">
             <ImHome />
           </Link>
-          <Menu
-            onClick={onClick}
-            selectedKeys={[current]}
-            mode="horizontal"
-            items={items}
-          />
+          <Menu mode="horizontal" items={items} />
         </>
       ) : (
         <></>

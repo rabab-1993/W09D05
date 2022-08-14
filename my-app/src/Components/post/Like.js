@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 
 const Like = ({ postId, allPosts }) => {
+  const [status, setStatus] = useState(false);
   const state = useSelector((state) => {
     return state;
   });
@@ -24,6 +25,8 @@ const Like = ({ postId, allPosts }) => {
           },
         }
       );
+      // console.log(result.201);
+      // {result.status === 201 ? setStatus(true) : setStatus(false)}
     } catch (error) {
       console.log(error);
     }
@@ -46,28 +49,30 @@ const Like = ({ postId, allPosts }) => {
     }
     allPosts();
   };
-
+  // console.log(postId);
   return (
     <>
-      {/* {items.likes.user === state.signIn.id ? (
-                  <FcLike
-                    // key={indx}
-                    className="post-icon"
-                    // onClick={() => console.log(like._id)}
-                    onClick={() => removeLikes(items.likes._id)}
-                  />
-                ) : (
-                  <FcLikePlaceholder
-                    // key={indx}
-                    className="post-icon"
-                    onClick={() => addLikes(items._id)}
-                  />
-                )} */}
-
+      {/* {postId.likes.map((item) => (
+        <>
+          {item.user === state.signIn.id ? (
+            <FcLike
+              // key={indx}
+              className="post-icon"
+              // onClick={() => console.log(like._id)}
+              onClick={() => removeLikes(postId.likes._id)}
+            />
+          ) : (
+            <FcLikePlaceholder
+              // key={indx}
+              className="post-icon"
+              onClick={() => addLikes(postId._id)}
+            />
+          )}
+        </>
+      ))} */}
+      
       <FcLike
-        // key={indx}
         className="post-icon"
-        // onClick={() => console.log(like._id)}
         onClick={() => addLikes(postId)}
       />
     </>

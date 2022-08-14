@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import { Menu, Avatar, Input } from "antd";
 import Nav from "../header/Nav";
 
 const Settings = () => {
@@ -35,6 +35,8 @@ const Settings = () => {
     <>
       <Nav />
       <div>Settings</div>
+      <Avatar size={{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }} src={data.avatar} />
+      <h2>{data.userName}</h2>
     </>
   );
 };
