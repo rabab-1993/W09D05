@@ -1,0 +1,62 @@
+.profile {
+  background-image: url(../../img/Wave.svg);
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.profile-info {
+  display: block;
+  text-align: center;
+  padding-top: 13rem;
+}
+
+.avatar {
+  position: absolute;
+  left: 49%;
+  top: 37%;
+  font-size: 2.2em;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.profile-info h1 {
+  font-size: 3em;
+  font-weight: bold;
+}
+.profile-img {
+  width: 25vw;
+  height: 60vh;
+}
+
+.preview {
+  height: 100%;
+  width: 25vw;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 2%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.417);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 3;
+  font-weight: bold;
+}
+
+.preview:hover {
+  opacity: 1;
+}
+
+.profile-posts {
+  padding-top: 6rem;
+}
+

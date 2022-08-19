@@ -1,0 +1,26 @@
+.search {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  right: 35%;
+}
+
+.search-input {
+  margin: auto;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  padding: 10px 5px;
+  position: absolute;
+  top: 120%;
+  background: rgb(246, 246, 246);
+  width: 100%;
+}
+
+.result a {
+  font-size: 1.4em;
+}
