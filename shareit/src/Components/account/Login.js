@@ -15,7 +15,7 @@ const Login = () => {
     } else {
       navigate("/login");
     }
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
   const dispatch = useDispatch();
   const state = useSelector((state) => {
@@ -39,11 +39,19 @@ const Login = () => {
         user: result.data.result,
       };
       dispatch(logIn(data));
-      navigate("/posts", {replace: true})
+    navigate("/posts", { replace: true });
+    window.location.reload(true);
+
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const signIn = () => {
+  //   userLog()
+  //   navigate("/posts", { replace: true });
+  //   // window.location.reload(true);
+  // };
 
   return (
     <div className="login">
@@ -112,7 +120,6 @@ const Login = () => {
         </Link>
         <h4>
           Dosn't have an account?
-
           <Link to="/register" className="register">
             Register
           </Link>

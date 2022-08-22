@@ -5,9 +5,28 @@
 
 .one-post {
   width: fit-content;
-  height: 100%;
+  height: fit-content;
   display: flex;
   flex-direction: row;
+}
+
+.one-post .slick-slider {
+  width: 30rem;
+}
+
+.one-post img {
+  height: 30rem;
+}
+
+.one-post .slick-next {
+  right: -0%;
+}
+
+.one-post .slick-prev {
+  left: -0%;
+  z-index: 3;
+  /* width: 2rem; */
+  /* font-size: 8rem; */
 }
 
 .one-post-user-info {
@@ -23,6 +42,11 @@
 .one-post-user-info h4 {
   padding: 0.7rem 0 0 0.3rem;
   font-weight: bold;
+}
+
+.one-post-user-info img {
+  border: 2px solid #000;
+  border-radius: 50%;
 }
 
 .one-post-comment {

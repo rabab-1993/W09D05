@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const Like = ({ postId, allPosts }) => {
   useEffect(() => {
@@ -12,22 +12,11 @@ const Like = ({ postId, allPosts }) => {
 
   const [data, setData] = useState([]);
     // eslint-disable-next-line
-  const [isLike, setIsLike] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  // eslint-disable-next-line
   const state = useSelector((state) => {
     return state;
   });
-
-  // const isLiked = () => {
-  //   data.map(like => {
-  //     if (like.user._id === state.signIn.id) {
-  //      return setIsLike(true)
-  //     } else {
-  //      return setIsLike(false)
-
-  //     }
-  // })
-
-  // }
 
   const allLikes = async () => {
     try {
@@ -41,7 +30,6 @@ const Like = ({ postId, allPosts }) => {
         }
       );
 
-      // console.log(result.data);
       setData(result.data);
     } catch (error) {
       console.log(error);
@@ -64,11 +52,11 @@ const Like = ({ postId, allPosts }) => {
           },
         }
       );
-      // console.log(result.201);
-      setIsLike(true);
+      setIsLiked(true);
     } catch (error) {
       console.log(error);
     }
+    allLikes();
     allPosts();
   };
 
@@ -83,74 +71,38 @@ const Like = ({ postId, allPosts }) => {
           },
         }
       );
-      setIsLike(false);
+      setIsLiked(false);
     } catch (error) {
       console.log(error);
     }
+    allLikes();
     allPosts();
   };
-  console.log(data);
-  // const liked = () => {
-  //   data.map((item) => (
-  //     <div key={item._id}>
-  //       {console.log(item.user._id)}
-  //       {isLike ? (
-  //         <FcLikePlaceholder
-  //           // key={indx}
-  //           className="post-icon"
-  //           onClick={() => addLikes(postId)}
-  //         />
-  //       ) : (
-  //         <FcLike
-  //           // key={indx}
-  //           className="post-icon"
-  //           // onClick={() => console.log(like._id)}
-  //           onClick={() => removeLikes(item._id)}
-  //         />
-  //       )}
-  //     </div>
-  //   ));
-  // };
+
   return (
     <>
-            {/* {isLike ? (
-               <FcLikePlaceholder
-               className="post-icon"
-               onClick={() => addLikes(postId)}
-             />
-          
-        ) : (
-          <FcLike
+      {data.length === 0 ? (
+        <AiOutlineHeart
           className="post-icon"
-          // onClick={() => removeLikes(item._id)}
+          onClick={() => addLikes(postId)}
         />
-        )} */}
-
-      {data.map((item) => {
-       return (
-        <div key={item._id}>
-        {console.log(item.user._id)}
-        {item.user._id !== state.signIn.id  ? (
-          <FcLike
-            className="post-icon"
-            onClick={() => removeLikes(item._id)}
-          />
-        ) : (
-          <FcLikePlaceholder
-            className="post-icon"
-            onClick={() => addLikes(postId)}
-          />
-        )}
-      </div>
-       )
-       })}
-
-
-      {/*       
-      <FcLike
-        className="post-icon"
-        onClick={() => addLikes(postId)}
-      /> */}
+      ) : (
+        data.map((item) => (
+          <div key={item._id}>
+            {item.user._id === state.signIn.id && postId === item.post._id ? (
+              <AiFillHeart
+                className="post-icon"
+                onClick={() => removeLikes(item._id)}
+              />
+            ) : (
+              <AiOutlineHeart
+                className="post-icon"
+                onClick={() => addLikes(postId)}
+              />
+            )}
+          </div>
+        ))
+      )}
     </>
   );
 };

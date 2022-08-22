@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Spin, Image, Input, Button, Modal, Avatar } from "antd";
+import {
+  Spin,
+  Image,
+  Input,
+  Button,
+  Modal,
+  Avatar,
+  message,
+  Divider,
+} from "antd";
 import Slider from "react-slick";
 import FileBase from "react-file-base64";
 import { FcPlus } from "react-icons/fc";
@@ -10,7 +19,6 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { GiTrashCan } from "react-icons/gi";
 import Like from "./Like";
 import Comments from "./Comments";
-
 
 import "./style.css";
 
@@ -24,13 +32,15 @@ const Post = () => {
       navigate("/posts");
       allPosts();
     }
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, []);
   const [text, setText] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [desc, setDesc] = useState("");
   const [imags, setImags] = useState([]);
   const [data, setData] = useState([]);
+  // eslint-disable-next-line
+  const [userInfo, setUserInfo] = useState([]);
   const [edit, setEdit] = useState("");
   const state = useSelector((state) => {
     return state;
@@ -58,7 +68,7 @@ const Post = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
   };
 
   const allPosts = async () => {
@@ -74,6 +84,7 @@ const Post = () => {
       );
 
       setData(result.data);
+      setUserInfo(result.data.user);
     } catch (error) {
       console.log(error);
     }
@@ -81,6 +92,7 @@ const Post = () => {
 
   const addPost = async () => {
     try {
+      message.loading("it's posting");
       // eslint-disable-next-line
       const result = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/posts/add`,
@@ -95,7 +107,7 @@ const Post = () => {
           },
         }
       );
-      console.log(result.data);
+      message.success("Posted");
     } catch (error) {
       console.log(error);
     }
@@ -157,75 +169,85 @@ const Post = () => {
     setIsModalVisible(false);
     setImags([]);
   };
-
   return (
     <div className="post">
-      <>
-        {(data &&
-          data.map((items) => {
-            return (
-              <div key={items._id} className="post-card">
+      {data.map((items) => {
+        return (
+          <div key={items._id} className="post-card">
+            {/* {userInfo.map((info) => (
                 <Link
-                  to={`/profile/${items.user.userName}`}
-                  state={{ userId: items.user._id }}
+                  to={`/profile/${info.userName}`}
+                  state={{ userId: info._id }}
                 >
                   <div className="user-info">
-                    <Avatar size={50} src={items.user.avatar} />
+                    <Avatar size={50} src={info.avatar} />
                     <h4>{items.user.userName}</h4>
                   </div>
                 </Link>
-                <Slider {...settings}>
-                {items.img.map((image, i) => <Image  key={i} src={image} alt="img" />)}
-                </Slider>
-                {items.user._id === state.signIn.id ? (
-                  <GiTrashCan
-                    onClick={() => deletePost(items._id)}
-                    className="post-icon"
-                  />
-                ) : (
-                  <></>
-                )}
-
-                <Like postId={items._id} allPosts={allPosts} />
-                {items.likes.length}
-
-                <div className="description-section">
-                  <h3>{items.user.userName}</h3>
-                  {edit === items._id ? (
-                    <>
-                      <TextArea
-                        defaultValue={items.desc}
-                        onChange={(ev) => setText(ev.target.value)}
-                        autoSize
-                        className="input"
-                      />
-
-                      <Button type="text" onClick={() => updateText(items._id)}>
-                        Update
-                      </Button>
-                      <Button type="text" danger onClick={() => setEdit("")}>
-                        Cancel
-                      </Button>
-                    </>
-                  ) : items.user._id === state.signIn.id ? (
-                    <p>
-                      {items.desc}
-                      <AiOutlineEdit
-                        className="desc-icon"
-                        onClick={() => setEdit(items._id)}
-                      />
-                    </p>
-                  ) : (
-                    <p> {items.desc}</p>
-                  )}
-                </div>
-
-                <h4>Comments({items.comments.length})</h4>
-                <Comments allPosts={allPosts} postId={items._id} />
+              ))} */}
+            <Link
+              to={`/profile/${items.user.userName}`}
+              state={{ userId: items.user._id }}
+            >
+              <div className="user-info">
+                <Avatar size={50} src={items.user.avatar} />
+                <h4>{items.user.userName}</h4>
               </div>
-            );
-          })) || <Spin size="large" />}
-      </>
+            </Link>
+            <Slider {...settings}>
+              {items.img.map((image, i) => (
+                <Image key={i} src={image} alt="img" />
+              ))}
+            </Slider>
+            <Divider />
+            <div className="like-section">
+              {items.user._id === state.signIn.id ? (
+                <GiTrashCan
+                  onClick={() => deletePost(items._id)}
+                  className="post-icon"
+                />
+              ) : (
+                <></>
+              )}
+              <Like postId={items._id} allPosts={allPosts} />
+              {items.likes.length}
+            </div>
+            <div className="description-section">
+              <h3>{items.user.userName}</h3>
+              {edit === items._id ? (
+                <>
+                  <TextArea
+                    defaultValue={items.desc}
+                    onChange={(ev) => setText(ev.target.value)}
+                    autoSize
+                    className="input"
+                  />
+
+                  <Button type="text" onClick={() => updateText(items._id)}>
+                    Update
+                  </Button>
+                  <Button type="text" danger onClick={() => setEdit("")}>
+                    Cancel
+                  </Button>
+                </>
+              ) : items.user._id === state.signIn.id ? (
+                <p>
+                  {items.desc}
+                  <AiOutlineEdit
+                    className="desc-icon"
+                    onClick={() => setEdit(items._id)}
+                  />
+                </p>
+              ) : (
+                <p> {items.desc}</p>
+              )}
+            </div>
+
+            <h4>Comments({items.comments.length})</h4>
+            <Comments allPosts={allPosts} postId={items._id} />
+          </div>
+        );
+      }) || <Spin size="large" />}
 
       <FcPlus className="add" onClick={showModal} />
       <Modal visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>

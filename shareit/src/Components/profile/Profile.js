@@ -17,23 +17,25 @@ import OnePost from "../post/OnePost";
 import "./style.css";
 
 const Profile = () => {
-  useEffect(() => {
-    allPosts();
-    getProfile();
-    // eslint-disable-next-line
-  }, []);
+ 
   const location = useLocation();
-  const [avatar, setAvatar] = useState(null);
-  const [userName, setUserName] = useState();
   const [postId, setPostId] = useState("");
   const [data, setData] = useState([]);
   const [info, setInfo] = useState([]);
+  const [avatar, setAvatar] = useState(null);
+  const [userName, setUserName] = useState();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editUserName, setEditUserName] = useState(false);
   const [editAvatar, setEditAvatar] = useState(false);
   const state = useSelector((state) => {
     return state;
   });
+
+  useEffect(() => {
+    allPosts();
+    getProfile();
+    // eslint-disable-next-line
+  }, [location.state.userId]);
 
   const showModal = (id) => {
     setIsModalVisible(true);
@@ -68,7 +70,7 @@ const Profile = () => {
         `${process.env.REACT_APP_BASE_URL}/user/update`,
         {
           userName: userName,
-          avatar,
+          avatar: avatar,
           _id: state.signIn.id,
         },
         {
@@ -77,7 +79,6 @@ const Profile = () => {
           },
         }
       );
-      console.log(result.data);
       setEditUserName(false);
       setEditAvatar(false);
     } catch (error) {
@@ -130,6 +131,7 @@ const Profile = () => {
           <div key={item._id} className="profile-info">
             <Avatar
               size={{ xs: 80, sm: 32, md: 40, lg: 64, xl: 150, xxl: 100 }}
+              className="avatar"
               src={item.avatar}
             />
 
@@ -153,7 +155,7 @@ const Profile = () => {
               <>
                 <FcStackOfPhotos
                   onClick={() => setEditAvatar(true)}
-                  className="avatar"
+                  className="edit-photo-icon"
                 />
                 <h1>
                   {item.userName}
@@ -180,7 +182,7 @@ const Profile = () => {
           <FileBase
             type="file"
             multiple={false}
-            onDone={(file) => setAvatar(file.base64)}
+            onDone={({ base64, base64: string }) => setAvatar(base64)}
           />
         </Modal>
         <Tabs defaultActiveKey="1" centered className="profile-posts">
@@ -196,7 +198,7 @@ const Profile = () => {
             <Row gutter={16}>
               {data.map((info) => (
                 <Col key={info._id}>
-                  <img alt="" src={info.img} className="profile-img" />
+                  <img alt="" src={info.img[0]} className="profile-img" />
                   <div className="preview">
                     {info.user._id === state.signIn.id ? (
                       <GiTrashCan

@@ -21,6 +21,11 @@
   width: 100%;
 }
 
-.result a {
+.result img {
+  border: 2px solid #000;
+  border-radius: 50%;
+}
+
+.search .result a {
   font-size: 1.4em;
 }

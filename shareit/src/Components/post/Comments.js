@@ -19,7 +19,7 @@ const Comments = ({ allPosts, postId }) => {
 
   useEffect(() => {
     allComments();
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [postId]);
 
   const allComments = async () => {
@@ -123,7 +123,7 @@ const Comments = ({ allPosts, postId }) => {
                 <b>{comment.userId.userName}</b>
               </h4>
             </Link>
-
+            {/* show the edit input  */}
             <p>
               {comment._id === editableComment ? (
                 <>
