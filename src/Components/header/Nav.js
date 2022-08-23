@@ -35,7 +35,7 @@ const Nav = () => {
     };
       userInfo();
     // eslint-disable-next-line
-  }, [state.signIn.id]);
+  }, [state]);
 
   const signOut = () => {
     navigate("/login");

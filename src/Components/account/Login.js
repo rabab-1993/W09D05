@@ -40,8 +40,7 @@ const Login = () => {
       };
       dispatch(logIn(data));
     navigate("/posts", { replace: true });
-    window.location.reload(true);
-
+    // window.location.reload(true);
     } catch (error) {
       console.log(error);
     }
