@@ -18,22 +18,25 @@ const Nav = () => {
   });
 
   useEffect(() => {
-    const userInfo = async () => {
-      try {
-        const result = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${state.signIn.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${state.signIn.token}`,
-            },
-          }
-        );
-        setInfo(result.data);
-      } catch (error) {
-        console.log(error);
+    if (state.signIn.id) {
+      const userInfo = async () => {
+        try {
+          const result = await axios.get(
+            `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${state.signIn.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${state.signIn.token}`,
+              },
+            }
+          );
+          setInfo(result.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
-    };
       userInfo();
+    }
+    
     // eslint-disable-next-line
   }, [state]);
 
