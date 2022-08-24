@@ -126,7 +126,6 @@ const Profile = () => {
     <>
       <Nav />
       <div className="profile">
-        <h1>profile page</h1>
         {info.map((item) => (
           <div key={item._id} className="profile-info">
             <Avatar

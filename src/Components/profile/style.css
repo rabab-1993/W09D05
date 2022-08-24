@@ -64,3 +64,23 @@
 .profile-posts {
   padding-top: 6rem;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .profile {
+    width: 100vw;
+    /* background: #000; */
+  }
+
+  .profile-img {
+    width: 40vw;
+    height: 30vh;
+  }
+
+  .preview {
+    width: 40vw;
+
+  }
+
+}
+
