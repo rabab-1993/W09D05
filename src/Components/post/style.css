@@ -47,6 +47,12 @@
   align-items: center;
 }
 
+/* .like-section span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
 .description-section {
   display: flex;
   align-items: center;

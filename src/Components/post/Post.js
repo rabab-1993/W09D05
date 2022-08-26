@@ -209,8 +209,9 @@ const Post = () => {
               ) : (
                 <></>
               )}
+
               <Like postId={items._id} allPosts={allPosts} />
-              {items.likes.length}
+              <span>{items.likes.length}</span>
             </div>
             <div className="description-section">
               <h3>{items.user.userName}</h3>

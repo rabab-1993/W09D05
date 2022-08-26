@@ -11,8 +11,6 @@ const Like = ({ postId, allPosts }) => {
   }, []);
 
   const [data, setData] = useState([]);
-    // eslint-disable-next-line
-  const [isLiked, setIsLiked] = useState(false);
   // eslint-disable-next-line
   const state = useSelector((state) => {
     return state;
@@ -52,7 +50,6 @@ const Like = ({ postId, allPosts }) => {
           },
         }
       );
-      setIsLiked(true);
     } catch (error) {
       console.log(error);
     }
@@ -71,7 +68,6 @@ const Like = ({ postId, allPosts }) => {
           },
         }
       );
-      setIsLiked(false);
     } catch (error) {
       console.log(error);
     }
@@ -79,14 +75,26 @@ const Like = ({ postId, allPosts }) => {
     allPosts();
   };
 
+
   return (
     <>
-      {data.length === 0 ? (
+    
+      {/* {data.filter(
+        (item) => item.user._id === state.signIn.id && postId === item.post._id
+      ).length > 0 ? (
+        <AiFillHeart
+          className="post-icon"
+          onClick={() => removeLikes(item._id)}
+        />
+      ) : (
         <AiOutlineHeart
           className="post-icon"
           onClick={() => addLikes(postId)}
         />
-      ) : (
+      )} */}
+      
+  
+      {data.length > 0 ? (
         data.map((item) => (
           <div key={item._id}>
             {item.user._id === state.signIn.id && postId === item.post._id ? (
@@ -99,9 +107,14 @@ const Like = ({ postId, allPosts }) => {
                 className="post-icon"
                 onClick={() => addLikes(postId)}
               />
-            )}
+              )}
           </div>
         ))
+      ) : (
+        <AiOutlineHeart
+          className="post-icon"
+          onClick={() => addLikes(postId)}
+        />
       )}
     </>
   );

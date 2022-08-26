@@ -53,3 +53,24 @@
   padding: 0.4rem;
   width: 100%;
 }
+
+
+@media only screen and (max-width: 600px) {
+  .one-post {
+    flex-direction: column;
+  }
+
+  .one-post > .slick-slider {
+    /* height: 30rem; */
+    width: 85vw;
+  }
+
+ .ant-modal-content > .ant-modal-body {
+    /* width: 100%; */
+    padding: 20px;
+  }
+
+  .one-post-comment {
+    padding-top: 3rem;
+  }
+}
