@@ -13,15 +13,13 @@ const Comments = ({ allPosts, postId }) => {
   const [text, setText] = useState("");
   const [editableComment, setEditableComment] = useState("");
   const [coment, setComent] = useState([]);
-  // const [ids, setIds] = useState([]);
-  const [user, setUser] = useState([]);
   const state = useSelector((state) => {
     return state;
   });
 
   let ids = [];
-  coment.forEach((item) => {
-    ids.push(item.userId);
+  // coment.forEach((item) => {
+  //   ids.push(item.userId);
   //   ids.push(
   //     <Link
   //       to={`/profile/${item.userId.userName}`}
@@ -33,7 +31,7 @@ const Comments = ({ allPosts, postId }) => {
   //       </h4>
   //     </Link>
   //   );
-  });
+  // });
   // console.log(ids);
 
   useEffect(() => {
@@ -148,22 +146,17 @@ const Comments = ({ allPosts, postId }) => {
   return (
     <>
       {coment.map((item) => {
-        // console.log(item.userId);
         return (
           <div key={item._id} className="comment">
-          {/* {ids.map ((info)=> (
-            <Link
-              to={`/profile/${info.userName}`}
-              state={{ userId: info._id }}
+             <Link
+              to={`/profile/${item.userId.userName}`}
+              state={{ userId: item.userId._id }}
             >
-              <Avatar size={30} src={info.avatar} />
+              <Avatar size={30} src={item.userId.avatar} />
               <h4>
-                <b>{info.userName}</b>
+                <b>{item.userId.userName}</b>
               </h4>
             </Link>
-          ))} */}
-         
-            {/* {ids} */}
             {/* show the edit input  */}
             <p>
               {item._id === editableComment ? (
@@ -182,7 +175,7 @@ const Comments = ({ allPosts, postId }) => {
                     onClick={() => setEditableComment("")}
                   />
                 </>
-              ) : item.userId === state.signIn.id ? (
+              ) : item.userId._id === state.signIn.id ? (
                 <>
                   {item.comment}
                   <AiOutlineEdit
@@ -205,11 +198,11 @@ const Comments = ({ allPosts, postId }) => {
         value={comment}
         placeholder="Add a comment"
         style={{
-          width: "80%",
+          width: "70%",
         }}
         onChange={(ev) => setComment(ev.target.value)}
       />
-      <Button onClick={() => addComment(postId)}>Post</Button>
+      <Button onClick={() => addComment(postId)}>Comment</Button>
     </>
   );
 };

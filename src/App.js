@@ -10,17 +10,16 @@ import Forget from "./Components/forgetPass/Forget";
 import ResetPass from "./Components/forgetPass/ResetPass";
 // import Dashboard from "./Components/dashboard/Dashboard";
 import Search from "./Components/search/Search";
-import 'antd/dist/antd.min.css'
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
+import "antd/dist/antd.min.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import "./App.css";
-import Nav from "./Components/header/Nav";
 
 function App() {
   return (
     <>
-    {/* <Nav /> */}
+      {/* <Nav /> */}
       {/* <Nav /> */}
       <Routes>
         <Route exact path="/posts" element={<Home />} />

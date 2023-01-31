@@ -11,7 +11,7 @@ import "./style.css";
 
 const Nav = () => {
   let navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [info, setInfo] = useState([]);
   const state = useSelector((state) => {
     return state;
@@ -33,16 +33,16 @@ const Nav = () => {
         } catch (error) {
           console.log(error);
         }
-      }
+      };
       userInfo();
     }
-    
+
     // eslint-disable-next-line
   }, [state]);
 
   const signOut = () => {
     navigate("/login");
-    dispatch(logOut())
+    dispatch(logOut());
   };
 
   const items = [
@@ -76,14 +76,16 @@ const Nav = () => {
   ];
 
   return (
+    <>
     <div className="nav">
+      <h1>Share It</h1>
       <Search />
       <Link to="/posts">
         <ImHome />
       </Link>
       {state.signIn.id ? <Menu mode="horizontal" items={items} /> : <></>}
-      
     </div>
+    </>
   );
 };
 export default Nav;
