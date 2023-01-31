@@ -75,10 +75,8 @@ const Like = ({ postId, allPosts }) => {
     allPosts();
   };
 
-
   return (
     <>
-    
       {/* {data.filter(
         (item) => item.user._id === state.signIn.id && postId === item.post._id
       ).length > 0 ? (
@@ -92,8 +90,10 @@ const Like = ({ postId, allPosts }) => {
           onClick={() => addLikes(postId)}
         />
       )} */}
-      
-  
+
+
+    
+
       {data.length > 0 ? (
         data.map((item) => (
           <div key={item._id}>

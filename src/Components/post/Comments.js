@@ -13,12 +13,48 @@ const Comments = ({ allPosts, postId }) => {
   const [text, setText] = useState("");
   const [editableComment, setEditableComment] = useState("");
   const [coment, setComent] = useState([]);
+  // const [ids, setIds] = useState([]);
+  const [user, setUser] = useState([]);
   const state = useSelector((state) => {
     return state;
   });
 
+  let ids = [];
+  coment.forEach((item) => {
+    ids.push(item.userId);
+  //   ids.push(
+  //     <Link
+  //       to={`/profile/${item.userId.userName}`}
+  //       state={{ userId: item.userId._id }}
+  //     >
+  //       <Avatar size={30} src={item.userId.avatar} />
+  //       <h4>
+  //         <b>{item.userId.userName}</b>
+  //       </h4>
+  //     </Link>
+  //   );
+  });
+  // console.log(ids);
+
   useEffect(() => {
+    // const getProfile = async () => {
+    //   try {
+    //     const result = await axios.get(
+    //       `${process.env.REACT_APP_BASE_URL}/user/profile?_id=${ids}`,
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${state.signIn.token}`,
+    //         },
+    //       }
+    //     );
+    //     setUser(result.data);
+    //     console.log(result.data);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
     allComments();
+    // getProfile();
     // eslint-disable-next-line
   }, [postId]);
 
@@ -35,6 +71,8 @@ const Comments = ({ allPosts, postId }) => {
       );
 
       setComent(result.data);
+      // setIds(result.data.userId);
+      // console.log(result.data);
     } catch (error) {
       console.log(error);
     }
@@ -107,60 +145,62 @@ const Comments = ({ allPosts, postId }) => {
     allPosts();
     allComments();
   };
-
   return (
     <>
-      {coment.map((comment) => {
-        // console.log(comment);
+      {coment.map((item) => {
+        // console.log(item.userId);
         return (
-          <div key={comment._id} className="comment">
+          <div key={item._id} className="comment">
+          {/* {ids.map ((info)=> (
             <Link
-              to={`/profile/${comment.userId.userName}`}
-              state={{ userId: comment.userId._id }}
+              to={`/profile/${info.userName}`}
+              state={{ userId: info._id }}
             >
-              <Avatar size={30} src={comment.userId.avatar} />
+              <Avatar size={30} src={info.avatar} />
               <h4>
-                <b>{comment.userId.userName}</b>
+                <b>{info.userName}</b>
               </h4>
             </Link>
+          ))} */}
+         
+            {/* {ids} */}
             {/* show the edit input  */}
             <p>
-              {comment._id === editableComment ? (
+              {item._id === editableComment ? (
                 <>
                   <Input
-                    defaultValue={comment.comment}
+                    defaultValue={item.comment}
                     onChange={(ev) => setText(ev.target.value)}
                     className="input"
                   />
                   <FcCheckmark
                     className="comment-icon"
-                    onClick={() => updateComment(comment._id)}
+                    onClick={() => updateComment(item._id)}
                   />
                   <FaTimes
                     className="comment-icon"
                     onClick={() => setEditableComment("")}
                   />
                 </>
-              ) : comment.userId._id === state.signIn.id ? (
+              ) : item.userId === state.signIn.id ? (
                 <>
-                  {comment.comment}
+                  {item.comment}
                   <AiOutlineEdit
                     className="edit-icon"
-                    onClick={() => setEditableComment(comment._id)}
+                    onClick={() => setEditableComment(item._id)}
                   />
                   <GiTrashCan
                     className="comment-icon"
-                    onClick={() => deleteComment(comment._id)}
+                    onClick={() => deleteComment(item._id)}
                   />
                 </>
               ) : (
-                <>{comment.comment}</>
+                <>{item.comment}</>
               )}
             </p>
           </div>
         );
       })}
-
       <Input
         value={comment}
         placeholder="Add a comment"

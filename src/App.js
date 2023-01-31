@@ -15,10 +15,12 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 import "./App.css";
+import Nav from "./Components/header/Nav";
 
 function App() {
   return (
     <>
+    {/* <Nav /> */}
       {/* <Nav /> */}
       <Routes>
         <Route exact path="/posts" element={<Home />} />
